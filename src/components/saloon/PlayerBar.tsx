@@ -1,10 +1,9 @@
 "use client";
 
 import { Pause, Play, SkipBack, SkipForward, Volume2 } from "lucide-react";
-import type { Track } from "@/lib/tracks";
 
 interface PlayerBarProps {
-  track: Track;
+  track: { title: string; artist: string };
   playing: boolean;
   currentTime: number;
   duration: number;
