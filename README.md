@@ -19,7 +19,8 @@ Explore a wide collection of immersive ambient music scenarios:
 * 🚌 **Bus Wale Bhaiya:** Relive the local bus journey complete with conductor calls, whistle sounds, and upbeat travel tracks.
 * ☕ **Chai Ki Tapri:** Chill with ambient street murmurs, boiling tea sounds, and relaxing acoustic/lo-fi tunes.
 * 🎺 **Baraat:** Feel the energy of a street wedding with loud dhols, cheering crowds, and high-energy dance anthems.
-* 🧽 **Bartan Dhona:** Make household chores fun with rhythmic background soundscapes and catchy upbeat tracks.
+* 🧽 **Bartan Dhona:** Make household chores fun with rhythmic background soundscapes and catchy upbeat tracks.<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/f4da7aee-6b47-428d-a90a-31501b6f1aae" />
+
 * 🌧️ **Barish:** Experience cozy rainy days with gentle rainfall sounds, thunder, and soothing melodies.
 * 🧹 **Diwali Ki Safai:** Get motivated for spring cleaning with energetic Bollywood classics and ambient home sounds.
 * 🎶 **Qawwali:** Transport yourself to a soulful mehfil with applause, classic rhythm beats, and timeless qawwalis.
