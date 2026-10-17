@@ -1,4 +1,6 @@
 # 🎧 Atmosphere & Nostalgia Jukebox
+<img width="1600" height="846" alt="WhatsApp Image 2026-10-17 at 3 13 16 PM" src="https://github.com/user-attachments/assets/9adacbb0-b26b-4338-84bc-a6f66d28a2e1" />
+
 
 > **Bring home the authentic sounds, vibes, and nostalgia of everyday Indian moments—no matter where you are.**
 
@@ -28,7 +30,8 @@ Explore a wide collection of immersive ambient music scenarios:
 
 * 🧹 **Diwali Ki Safai:** Get motivated for spring cleaning with energetic Bollywood classics and ambient home sounds.<img width="1920" height="945" alt="Screenshot (173)" src="https://github.com/user-attachments/assets/d4c4b5a6-3d5a-4363-9783-27b0615346a7" />
 
-* 🎶 **Qawwali:** Transport yourself to a soulful mehfil with applause, classic rhythm beats, and timeless qawwalis.
+* 🎶 **Qawwali:** Transport yourself to a soulful mehfil with applause, classic rhythm beats, and timeless qawwalis.<img width="1920" height="951" alt="Screenshot (176)" src="https://github.com/user-attachments/assets/5256033c-8629-48e7-a576-359139ebf3f9" />
+
 * 💈 **Nai Wale Bhaiya:** Sit back in the barber shop chair with scissor-snapping ambient audio and relaxing radio tunes.<img width="1920" height="950" alt="Screenshot (168)" src="https://github.com/user-attachments/assets/9907cadb-3ce4-4782-b806-666edeb75c92" />
 
 * 💡 **Light Chali Gayi:** Nostalgic power-cut vibes complete with inverter hums, night crickets, and acoustic acoustic tracks.<img width="1920" height="954" alt="Screenshot (170)" src="https://github.com/user-attachments/assets/de0bf927-9a21-49fe-8477-1e87dbcf1f31" />
