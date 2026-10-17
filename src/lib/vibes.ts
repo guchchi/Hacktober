@@ -69,6 +69,10 @@ export const VIBES: Vibe[] = [
       { id: "radio", label: "Transistor", hint: "battery wala radio", volume: 0.25 },
       { id: "birds", label: "Titaliyan", hint: "chhat pe", volume: 0.12 },
     ],
+    tracks: [
+      { title: "Jaadu Teri Nazar", artist: "Udit Narayan", src: "/audio/saloon/02-jaadu-teri-nazar.mp3" },
+      { title: "Kabhi Jo Baadal Barse", artist: "Arijit Singh", src: "/audio/barish/01-kabhi-jo-baadal-barse.mp3" },
+    ],
   },
   {
     id: "barati",
@@ -130,6 +134,10 @@ export const VIBES: Vibe[] = [
       { id: "clinks", label: "Taash ke patte", hint: "gerha, chhota", volume: 0.3 },
       { id: "traffic", label: "Bahar", hint: "colony ki awaaz", volume: 0.2 },
     ],
+    tracks: [
+      { title: "Gallan Goodiyaan", artist: "Farhan Akhtar & ensemble", src: "/audio/barati/02-gallan-goodiyaan.mp3" },
+      { title: "Chunnari Chunnari", artist: "Abhijeet & Anuradha Sriram", src: "/audio/barati/01-chunnari-chunnari.mp3" },
+    ],
   },
   {
     id: "bus",
@@ -147,6 +155,10 @@ export const VIBES: Vibe[] = [
       { id: "horn", label: "Horn", hint: "door se…", volume: 0.5 },
       { id: "radio", label: "Driver ka radio", hint: "loud gaana", volume: 0.5 },
       { id: "murmur", label: "Sawariyan", hint: "logon ki pink noise", volume: 0.3 },
+    ],
+    tracks: [
+      { title: "Rafta Rafta", artist: "Atif Aslam", src: "/audio/barish/02-rafta-rafta.mp3" },
+      { title: "Tere Liye", artist: "Atif Aslam & Shreya Ghoshal", src: "/audio/barish/03-tere-liye.mp3" },
     ],
   },
   {
@@ -191,6 +203,8 @@ export const VIBES: Vibe[] = [
     ],
   },
 ];
+
+export const FALLBACK_TRACKS: LocalTrack[] = VIBES[0].tracks ?? [];
 
 export function getVibe(id: string): Vibe {
   return VIBES.find((vibe) => vibe.id === id) ?? VIBES[0];

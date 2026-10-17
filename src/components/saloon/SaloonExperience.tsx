@@ -1,12 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronDown, Download, ListMusic, Play, Radio } from "lucide-react";
-import { AmbientEngine } from "@/lib/audio/engine";
-import { VinylHiss } from "@/lib/audio/crackle";
-import { PLAYLISTS, SITE, type LocalTrack } from "@/lib/tracks";
-import { getVibe, VIBES } from "@/lib/vibes";
+import { PLAYLISTS, SITE } from "@/lib/tracks";
+import { FALLBACK_TRACKS, getVibe, VIBES } from "@/lib/vibes";
 import { useLocalPlayer } from "@/lib/useLocalPlayer";
 import Particles from "../Particles";
 import GlassModal from "./GlassModal";
@@ -37,31 +35,18 @@ function BrandYouTube({ className }: { className?: string }) {
 const pillClass =
   "flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-medium text-white/75 transition-colors hover:bg-white/10 hover:text-white sm:px-3.5";
 
-const EMPTY_TRACKS: LocalTrack[] = [];
-
 export default function SaloonExperience() {
-  const [hissOn, setHissOn] = useState(false);
   const [modal, setModal] = useState<ModalKind>(null);
   const [clock, setClock] = useState("");
   const [vibeId, setVibeId] = useState(VIBES[0].id);
   const [started, setStarted] = useState(false);
-  const [ambientOnlyPlaying, setAmbientOnlyPlaying] = useState(false);
   const [installEvent, setInstallEvent] =
     useState<BeforeInstallPromptEvent | null>(null);
 
-  const hissRef = useRef<VinylHiss | null>(null);
-  const ambientRef = useRef<AmbientEngine | null>(null);
   const vibe = getVibe(vibeId);
-  const localTracks = vibe.tracks ?? EMPTY_TRACKS;
-  const hasTracks = localTracks.length > 0;
+  const localTracks = vibe.tracks ?? FALLBACK_TRACKS;
   const player = useLocalPlayer(localTracks);
-
-  const ambientActive = hasTracks ? player.playing : started && ambientOnlyPlaying;
-  const experiencePlaying = hasTracks ? player.playing : ambientOnlyPlaying;
-  const displayTrack = player.track ?? {
-    title: "Sirf mahol",
-    artist: "is vibe me gaana nahi — ambient radio",
-  };
+  const displayTrack = player.track ?? FALLBACK_TRACKS[0];
 
   useEffect(() => {
     const tick = () => {
@@ -82,44 +67,6 @@ export default function SaloonExperience() {
   }, []);
 
   useEffect(() => {
-    const engine = new AmbientEngine();
-    ambientRef.current = engine;
-    return () => {
-      engine.dispose();
-      ambientRef.current = null;
-    };
-  }, []);
-
-  useEffect(() => {
-    const engine = ambientRef.current;
-    if (!engine) return;
-    if (!ambientActive) {
-      engine.stopAll();
-      return;
-    }
-    const specs = vibe.layers.map((layer) => ({
-      id: layer.id,
-      volume: layer.volume,
-    }));
-    void engine.setScene(specs, vibe.id);
-  }, [ambientActive, vibe]);
-
-  useEffect(() => {
-    hissRef.current = new VinylHiss();
-    return () => {
-      hissRef.current?.dispose();
-      hissRef.current = null;
-    };
-  }, []);
-
-  useEffect(() => {
-    const hiss = hissRef.current;
-    if (!hiss) return;
-    if (hissOn) void hiss.start();
-    else hiss.stop();
-  }, [hissOn]);
-
-  useEffect(() => {
     const handler = (event: Event) => {
       event.preventDefault();
       setInstallEvent(event as BeforeInstallPromptEvent);
@@ -128,37 +75,18 @@ export default function SaloonExperience() {
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
-  const startVibe = useCallback(() => {
-    const engine = ambientRef.current;
-    if (!engine) return;
-    void engine.start();
-    engine.setMasterVolume(0.6);
-  }, []);
-
   const playAll = useCallback(() => {
     setStarted(true);
-    startVibe();
-    if (hasTracks) player.play();
-    else setAmbientOnlyPlaying(true);
-  }, [hasTracks, player, startVibe]);
+    player.play();
+  }, [player]);
 
   const toggleAll = useCallback(() => {
     setStarted(true);
-    if (!hasTracks) {
-      setAmbientOnlyPlaying((value) => {
-        const next = !value;
-        if (next) startVibe();
-        return next;
-      });
-      return;
-    }
-    if (!player.playing) startVibe();
     player.toggle();
-  }, [hasTracks, player, startVibe]);
+  }, [player]);
 
   const selectTrack = (index: number) => {
     setStarted(true);
-    startVibe();
     player.select(index);
     player.play();
     setModal(null);
@@ -336,18 +264,16 @@ export default function SaloonExperience() {
         <div className="mx-auto max-w-5xl">
           <PlayerBar
             track={displayTrack}
-            playing={experiencePlaying}
-            currentTime={hasTracks ? player.currentTime : 0}
-            duration={hasTracks ? player.duration : 0}
+            playing={player.playing}
+            currentTime={player.currentTime}
+            duration={player.duration}
             volume={player.volume}
-            hissOn={hissOn}
             canSkip={player.canSkip}
             onToggle={toggleAll}
             onNext={player.next}
             onPrev={player.prev}
             onSeek={player.seek}
             onVolume={player.setVolume}
-            onToggleHiss={() => setHissOn((value) => !value)}
           />
           <p className="mt-2 text-center font-roboto text-[11px] text-white/55 text-shadow-warm">
             <span>Deluxe Saloon · open all hours</span>
@@ -413,8 +339,8 @@ export default function SaloonExperience() {
           })}
         </div>
         <p className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[11px] leading-relaxed text-white/45">
-          Vibe badalte hi background, accent, ambient awaaz aur radio ke gaane — sab
-          badal jaate hain. Play button dabao aur dekho.
+          Vibe badalte hi background, accent aur gaane — sab badal jaate hain. Play
+          button dabao aur dekho.
         </p>
       </GlassModal>
 
@@ -424,38 +350,32 @@ export default function SaloonExperience() {
         title={`${vibe.latin} · Radio Queue`}
         subtitle="Abhi baj raha hai, aur aage kya"
       >
-        {hasTracks ? (
-          <ul className="flex flex-col gap-1">
-            {localTracks.map((item, index) => {
-              const active = index === player.index;
-              return (
-                <li key={item.src}>
-                  <button
-                    type="button"
-                    onClick={() => selectTrack(index)}
-                    className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors ${
-                      active ? "bg-white/15" : "hover:bg-white/[0.07]"
-                    }`}
-                  >
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 font-roboto text-[11px] text-white/70">
-                      {active ? "▶" : index + 1}
+        <ul className="flex flex-col gap-1">
+          {localTracks.map((item, index) => {
+            const active = index === player.index;
+            return (
+              <li key={item.src}>
+                <button
+                  type="button"
+                  onClick={() => selectTrack(index)}
+                  className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors ${
+                    active ? "bg-white/15" : "hover:bg-white/[0.07]"
+                  }`}
+                >
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 font-roboto text-[11px] text-white/70">
+                    {active ? "▶" : index + 1}
+                  </span>
+                  <span className="flex min-w-0 flex-col">
+                    <span className="truncate text-sm text-white/95">{item.title}</span>
+                    <span className="truncate font-roboto text-[11px] text-white/50">
+                      {item.artist}
                     </span>
-                    <span className="flex min-w-0 flex-col">
-                      <span className="truncate text-sm text-white/95">{item.title}</span>
-                      <span className="truncate font-roboto text-[11px] text-white/50">
-                        {item.artist}
-                      </span>
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-6 text-center text-sm text-white/60">
-            Is vibe me sirf ambient awaaz hai — koi gaana nahi. 🎧
-          </p>
-        )}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
         <p className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[11px] leading-relaxed text-white/45">
           Vibes ke gaane <code className="text-white/70">src/lib/vibes.ts</code> me{" "}
           <code className="text-white/70">tracks</code> array se aate hain — files{" "}
